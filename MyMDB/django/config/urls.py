@@ -35,3 +35,8 @@ urlpatterns = [
     path('', include(
         core.urls, namespace='core')),
 ] + MEDIA_FILE_PATHS
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls)),]
