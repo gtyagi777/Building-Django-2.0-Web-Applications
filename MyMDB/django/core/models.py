@@ -29,6 +29,14 @@ class MovieManager(models.Manager):
         qs = qs.select_related('director')
         qs = qs.prefetch_related('writers', 'actors')
         return qs
+    
+    def top_movies(self, limit=10):
+        qs = self.get_queryset()
+        qs = qs.annotate(vote_sum=Sum('vote_value'))
+        qs = qs.exclude(vote_sum=None)
+        qs = qs.order_by('-vote_sum')
+        qs = qs[:limit]
+        return qs
 
 class Movie(models.Model):
 
