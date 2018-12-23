@@ -14,7 +14,8 @@ class Question(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse('questions:question_detail', kwargs={'pk': self.id})
+        return reverse('qanda:ask')
+        # return reverse('questions:question_detail', kwargs={'pk': self.id})
     
     def can_accept_answers(self, user):
         return user == self.user
@@ -31,7 +32,3 @@ class Answer(models.Model):
 
     class Meta:
         ordering = ('-created', )
-
-
-class Dumb(models.Model):
-    create = models.DateTimeField(auto_now_add=True)

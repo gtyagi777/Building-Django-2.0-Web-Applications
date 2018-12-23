@@ -1,3 +1,5 @@
 django<2.1
 psycopg2<2.8
 psycopg2-binary<2.8
+django-markdownify==0.2.2 # Markdown to html | sanity check
+django-crispy-forms==1.7  # renders forms to bootstrap, zurb styles etc.
