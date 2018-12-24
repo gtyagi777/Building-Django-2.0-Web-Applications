@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
-from django.views.generic import CreateView, DetailView
-from django.http.response import HttpResponseBadRequest
+from django.views.generic import CreateView, DetailView, UpdateView, DayArchiveView, RedirectView
+from django.http.response import HttpResponseBadRequest, HttpResponseRedirect
+from django.utils import timezone
+from django.urls import reverse
 
 from qanda.forms import QuestionForm, AnswerAcceptanceForm, AnswerForm
-from qanda.models import Question
+from qanda.models import Question, Answer
 
 
 class BaseView(TemplateView):
@@ -72,4 +74,50 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
         return super().get_context_data(question=self.get_question(), 
                                         **kwargs)
     
+    def get_success_url(self):
+        return self.object.question.get_absolute_url()
     
+    def form_valid(self, form):
+        action = self.request.POST.get('action')
+        if action == 'SAVE':
+            return super().form_valid(form)
+        elif action == 'PREVIEW':
+            ctx = self.get_context_data(preview=form.cleaned_data['answer'])
+            return self.render_to_response(context=ctx)
+        return HttpResponseBadRequest()
+    
+    def get_question(self):
+        return Question.objects.get(pk=self.kwargs['pk'])
+
+
+class UpdateAnswerAcceptance(LoginRequiredMixin, UpdateView):
+    form_class = AnswerAcceptanceForm
+    queryset = Answer.objects.all()
+
+    def get_success_url(self):
+        return self.object.question.get_absolute_url()
+    
+    def form_invalid(self, form):
+        return HttpResponseRedirect(
+            redirect_to=self.object.question.get_absolute_url()
+        )
+
+
+class DailyQuestionList(DayArchiveView):
+    queryset = Question.objects.all()
+    date_field = 'created'
+    month_format = '%m'
+    allow_empty = True
+
+
+class TodaysQuestionList(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        today = timezone.now()
+        return reverse(
+            'qanda:daily_questions',
+            kwargs={
+                'day': today.day,
+                'month': today.month,
+                'year': today.year,
+            }
+        )

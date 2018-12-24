@@ -1,5 +1,6 @@
 /docs
 /.vscode
+Answerly/django/.vscode/
 
 __pycache__/
 *.pyc
