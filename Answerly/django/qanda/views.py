@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from qanda.forms import QuestionForm, AnswerAcceptanceForm, AnswerForm
 from qanda.models import Question, Answer
-
+from qanda.service.elasticsearch import search_for_question 
 
 class BaseView(TemplateView):
     template_name = 'base.html'
@@ -108,6 +108,8 @@ class DailyQuestionList(DayArchiveView):
     date_field = 'created'
     month_format = '%m'
     allow_empty = True
+    paginate_by = 20
+
 
 
 class TodaysQuestionList(RedirectView):
@@ -121,3 +123,16 @@ class TodaysQuestionList(RedirectView):
                 'year': today.year,
             }
         )
+
+
+class SearchView(TemplateView):
+    template_name = 'qanda/search.html'
+
+    def get_context_data(self, **kwargs):
+        query = self.request.GET.get('q', None)
+        ctx = super().get_context_data(query=query, **kwargs)
+
+        if query:
+            results = search_for_question(query)
+            ctx['hits'] = results
+        return ctx

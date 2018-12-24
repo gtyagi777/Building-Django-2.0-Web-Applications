@@ -1,6 +1,9 @@
 /docs
 /.vscode
 Answerly/django/.vscode/
+Answerly/django/qanda/management/commands/data1.csv
+Answerly/django/qanda/management/commands/data2.csv
+
 
 __pycache__/
 *.pyc
