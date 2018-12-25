@@ -132,8 +132,6 @@ LOGIN_REDIRECT_URL = 'qanda:index'
 LOGOUT_REDIRECT_URL = 'qanda:index'
 
 
-ES_INDEX = 'answerly'
-ES_HOST = 'localhost'
-EX_PORT = '9200'
-
-CHROMEDRIVER = os.path.join(BASE_DIR, '../chromedriver')
+ES_INDEX = os.getenv('DJANGO_ES_INDEX')
+ES_HOST  = os.getenv('DJANGO_ES_HOST')
+EX_PORT  = os.getenv('DJANGO_ES_PORT')

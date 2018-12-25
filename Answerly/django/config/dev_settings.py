@@ -10,3 +10,6 @@ DATABASES['default'].update({
     'HOST': '127.0.0.1',
     'PORT': '5432'
 })
+
+# For testing
+CHROMEDRIVER = os.path.join(BASE_DIR, '../chromedriver')
