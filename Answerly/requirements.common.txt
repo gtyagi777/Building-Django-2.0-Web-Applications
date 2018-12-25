@@ -4,6 +4,3 @@ psycopg2-binary<2.8
 django-markdownify==0.2.2 # Markdown to html | sanity check
 django-crispy-forms==1.7  # renders forms to bootstrap, zurb styles etc
 elasticsearch==6.0.0
-coverage==4.4.2
-factory-boy==2.9.2
-selenium==3.8.0
