@@ -150,3 +150,5 @@ LOGOUT_REDIRECT_URL = 'qanda:index'
 ES_INDEX = 'answerly'
 ES_HOST = 'localhost'
 EX_PORT = '9200'
+
+CHROMEDRIVER = os.path.join(BASE_DIR, '../chromedriver')

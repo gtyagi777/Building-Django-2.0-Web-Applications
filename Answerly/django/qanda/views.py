@@ -108,7 +108,7 @@ class DailyQuestionList(DayArchiveView):
     date_field = 'created'
     month_format = '%m'
     allow_empty = True
-    paginate_by = 20
+    paginate_by = 50
 
 
 
