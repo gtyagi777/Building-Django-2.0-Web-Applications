@@ -11,16 +11,16 @@
         </a>
     </h1>
 
-    <!-- <div>
-        <a href="{% url 'mailinglist:create_mailinglist' mailinglist_pk=mailinglist.id %}">
+    <div>
+        <a href="{% url 'mailinglist:subscribe' pk=mailinglist.id %}">
             Subscription Link
         </a>
-    </div> -->
+    </div>
 
     <h2>Messages</h2>
     <div>
         Send New
-        <a href="{% url 'mailinglist:create_message' mailinglist_pk=mailinglist.id %}" class="btn btn-primary">
+        <a href="{% url 'mailinglist:create_message' pk=mailinglist.id %}" class="btn btn-primary">
             Send new message
         </a>
     </div>

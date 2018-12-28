@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DeleteView, DetailView
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404
-
+from django.http.response import HttpResponse
 
 from mailinglist.models import MailingList, Message, Subscriber
 from mailinglist.forms import MailingListForm, SubscriberForm, MessageForm
@@ -33,14 +33,18 @@ class DeleteMailingListView(LoginRequiredMixin, UserCanUseMailingList, DeleteVie
 class MailingListDetailView(LoginRequiredMixin, UserCanUseMailingList, DetailView):
     model = MailingList
 
+    def get_object(self):
+        return MailingList.objects.get(pk=self.kwargs['pk'])
+
+
 
 class SubscribeToMailingListView(CreateView):
     form_class = SubscriberForm
-    template_name = 'mailinglist/subcriber_form.html'
+    template_name = 'mailinglist/subscriber_form.html'
 
     def get_initial(self):
         return {
-            'mailing_list': self.kwargs['mailinglist_id']
+            'mailing_list': self.kwargs['pk']
         }
     
     def get_success_url(self):
@@ -50,7 +54,7 @@ class SubscribeToMailingListView(CreateView):
     
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        mailing_list_id = self.kwargs['mailinglist_id']
+        mailing_list_id = self.kwargs['pk']
         ctx['mailing_list'] = get_object_or_404(
             MailingList,
             id=mailing_list_id
@@ -76,12 +80,12 @@ class ConfirmSubsriiptionView(DetailView):
 
 class UnsubscribeView(DeleteView):
     model = Subscriber
-    tempalte_name = 'mailinglist/unsubscribe.html'
+    template_name = 'mailinglist/unsubscribe.html'
 
     def get_success_url(self):
         mailing_list = self.object.mailing_list
         return reverse('mailinglist:subscribe', kwargs={
-            'mailinglist_pk': mailing_list.id
+            'pk': mailing_list.id
         })
 
 
@@ -124,7 +128,7 @@ class CreateMessageView(LoginRequiredMixin, CreateView):
             return super().form_valid(form)
     
     def get_mailing_list(self):
-        mailing_list = get_object_or_404(MailingList, id=self.kwargs['mailinglist_ok'])
+        mailing_list = get_object_or_404(MailingList, id=self.kwargs['pk'])
 
         if not mailing_list.user_can_use_mailing_list(self.request.user):
             raise PermissionError()
