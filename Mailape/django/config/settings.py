@@ -33,8 +33,10 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'user',
     'mailinglist',
+
     'crispy_forms',
     'markdownify',
+    'django_celery_results',
 
     'django_extensions',
 
@@ -137,3 +139,17 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'user:login'
 LOGIN_REDIRECT_URL  = 'mailinglist:mailinglist_list'
 LOGOUT_REDIRECT_URL = 'user:login'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_HOST_USER = 'ieit.email@bk.ru'
+EMAIL_HOST_PASSWORD = 'CFCkRCXbwpsCTh4'
+EMAIL_PORT = 2525
+
+MAILING_LIST_FROM_EMAIL = EMAIL_HOST_USER
+MAILING_LIST_LINK_DOMAIN = 'http://localhost:8000'
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'

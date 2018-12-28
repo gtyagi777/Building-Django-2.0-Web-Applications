@@ -1,0 +1,9 @@
+{{ body }}
+
+---
+
+You're receiving this message because you previously subscriped to {{ mailinglist }}.
+
+If you'd like to unsubsribe go to {{ unsubscription_link }} and click unsubscribe.
+
+Sent with Mail Ape.
