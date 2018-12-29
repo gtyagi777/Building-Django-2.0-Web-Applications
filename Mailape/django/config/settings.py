@@ -145,7 +145,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_HOST_USER = 'ieit.email@bk.ru'
-EMAIL_HOST_PASSWORD = 'CFCkRCXbwpsCTh4'
+EMAIL_HOST_PASSWORD = os.getenv('DJANGO_EMAIL_PASSWORD')
 EMAIL_PORT = 2525
 
 MAILING_LIST_FROM_EMAIL = EMAIL_HOST_USER
